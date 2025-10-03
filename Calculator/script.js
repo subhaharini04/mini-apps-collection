@@ -11,9 +11,14 @@ buttons.forEach(button => {
             present = "";
             number = [];
             operator = [];
-            expression="";
+            expression = "";
             display.value = "";
-        } else if (btn === "=") {
+        } else if (btn === "DEL") {
+            expression = expression.slice(0, -1);
+            display.value = expression;
+            present = present.slice(0, -1);
+        }
+        else if (btn === "=") {
             number.push(parseFloat(present));
             const result = operation(number, operator);
             display.value = result;
@@ -22,10 +27,22 @@ buttons.forEach(button => {
             operator = [];
             expression = result.toString();
         } else if (btn >= 0 && btn <= 9 || btn === ".") {
-             if (btn === "." && present.includes(".")) return;
+            if (btn === "." && present.includes(".")) return;
             present += btn;
             expression += btn;
             display.value = expression;
+        } else if (btn === "%") {
+            present = (parseFloat(present) / 100).toString();
+            expression = present;
+            display.value = expression;
+        }
+        else if (btn === "+/-") {
+            if (present) {
+                present = (parseFloat(present) * -1).toString();
+                display.value = expression.slice(0, expression.length - present.length) + present;
+                expression = display.value;
+
+            }
         } else {
             number.push(parseFloat(present));
             operator.push(btn);
