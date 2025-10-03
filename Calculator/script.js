@@ -1,39 +1,54 @@
 const display = document.getElementById("display");
 const buttons = document.querySelectorAll("button");
 let present = "";
-let previous = "";
-let operator = "";
+let number = [];
+let operator = [];
 
 buttons.forEach(button => {
     button.addEventListener("click", () => {
-        if (button.textContent === "C") {
-            display.value = " ";
-        } else if (button.textContent === "=") {
-            previous = operation(present, previous, operator);
-            display.value = previous;
+        let btn = button.textContent;
+        if (btn === "C") {
+            present = "";
+            number = [];
+            operator = [];
+            display.value = "";
+        } else if (btn === "=") {
+            number.push(parseFloat(present));
+            const result = operation(number, operator);
+            display.value = result;
+            present = result.toString();
+            number = [];
+            operator = [];
+        } else if (btn >= 0 && btn <= 9 || btn === ".") {
+            present += btn;
+            display.value = present;
         } else {
-            display.value += button.textContent;
-            let btn = button.textContent;
-            if (btn >= 0 && btn <= 9 || btn === ".") {
-                present += btn;
-            } else {
-                if (previous === "") {
-                    previous = present;
-                    present = "";
-                }else{
-                operator = btn;
-                previous = operation(present, previous, operator);
-            }
-            }
+            number.push(parseFloat(present));
+            operator.push(btn);
+            present = "";
+            display.value+=btn;
+
         }
     });
 });
 
-function operation(a, b, op) {
-    a = parseFloat(a);
-    b = parseFloat(b);
-    if (op === "+") return a + b;
-    if (op === "-") return a - b;
-    if (op === "X") return a * b;
-    if (op === "÷") return a / b;
+function operation(num,op) {
+    for(let i=0;i<op.length;i++){
+        if(op[i]==="X"||op[i]==="÷"){
+            const result=operator[i]==="x" ? num[i]*num[i+1]:num[i]/num[i+1];
+            num.splice(i,2,result);
+            op.splice(i,1);
+            i--;
+        }
+    }
+    let result=num[0];
+    for(let i=0;i<op.length;i++){
+        if(op[i]==="+"){
+            result+=num[i+1];
+        }else if(op[i]==="-"){
+            result-=num[i+1];
+        }
+    }
+        return result;
+
 }
