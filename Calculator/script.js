@@ -37,20 +37,38 @@ buttons.forEach(button => {
             display.value = expression;
         }
         else if (btn === "+/-") {
-            if (present) {
-                present = (parseFloat(present) * -1).toString();
-                display.value = expression.slice(0, expression.length - present.length) + present;
-                expression = display.value;
-
+           if (present === "") return;
+            
+            // Toggle the sign of the current number
+            if (present.startsWith("-")) {
+                present = present.substring(1);
+            } else {
+                present = "-" + present;
             }
-        } else {
-            number.push(parseFloat(present));
-            operator.push(btn);
-            present = "";
-            expression += btn;
+            let lastOpIndex = Math.max(
+                expression.lastIndexOf("+"),
+                expression.lastIndexOf("-"),
+                expression.lastIndexOf("x"),
+                expression.lastIndexOf("÷")
+            );
+            
+            if (lastOpIndex === -1) {
+                // No operator found, this is the first number
+                expression = present;
+            } else {
+                // Replace the last number in expression
+                expression = expression.substring(0, lastOpIndex + 1) + present;
+            }
+            
             display.value = expression;
+    } else {
+        number.push(parseFloat(present));
+        operator.push(btn);
+        present = "";
+        expression += btn;
+        display.value = expression;
 
-        }
+    }
     });
 });
 
