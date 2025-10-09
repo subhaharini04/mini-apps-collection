@@ -48,8 +48,7 @@ public class WeatherOp {
             System.out.println("🌬 Wind Speed: " + windSpeed + " m/s");
 
         }catch (Exception e){
-            System.out.println("Error");
-            e.printStackTrace();
+            System.out.println("Sorry, We not Found your Location!");
         }
     }
 }
