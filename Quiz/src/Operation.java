@@ -24,24 +24,17 @@ public class Operation {
                 new String[]{"1. Stack", "2. Queue", "3. Tree", "4. Graph"},
                 2
         ));
-
-        quest.add(new Question(
-                "Which company developed the Java programming language?",
-                new String[]{"1. Microsoft", "2. Sun Microsystems", "3. Google", "4. IBM"},
-                2
-        ));
-
-        quest.add(new Question(
-                "Which of the following is a NoSQL database?",
-                new String[]{"1. MySQL", "2. Oracle", "3. MongoDB", "4. PostgreSQL"},
-                3
-        ));
     }
     public void startQuiz(String name){
+        score=0;
        for (Question question:quest){
            question.display();
            System.out.print("Enter the correct option(1-4): ");
            int ans=obj.nextInt();
+           while(ans>4){
+               System.out.print("Enter the correct option in between 1 to 4:");
+               ans= obj.nextInt();
+           }
            if(ans==question.index){
                score++;
                System.out.println("Correct Answer");
@@ -53,8 +46,14 @@ public class Operation {
        scoreBoard.put(name,score);
     }
     public void highScore(){
-    for (Map.Entry<String,Integer> value:scoreBoard.entrySet()){
-        System.out.println(value.getKey()+" "+value.getValue());
+        List<Map.Entry<String,Integer>> list=new ArrayList<>(scoreBoard.entrySet());
+        list.sort((a,b)->b.getValue()-a.getValue());
+        System.out.printf("%-5s | %-15s | %s%n", "Rank","UserName", "Score");
+        System.out.println("---------------------------");
+        int rank=1;
+        for (Map.Entry<String,Integer> entry : list) {
+            System.out.printf("%-5s | %-15s | %d%n", rank,entry.getKey(), entry.getValue());
+            rank++;
     }
     }
 }

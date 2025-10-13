@@ -6,6 +6,7 @@ public class QuizApp {
         System.out.println("Welcome to Quiz App");
         boolean isRunning=true;
         Operation op=new Operation();
+        op.loadQuest();
         while (isRunning){
             System.out.println("1. Start Quiz\n2. View High Score\n3. Exit");
             System.out.print("Enter Your Choice: ");
@@ -13,7 +14,6 @@ public class QuizApp {
             obj.nextLine();
             switch(choice){
                 case 1:
-                    op.loadQuest();
                     System.out.print("Enter UserName: ");
                     String name= obj.nextLine();
                     op.startQuiz(name);
